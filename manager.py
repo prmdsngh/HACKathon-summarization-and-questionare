@@ -20,9 +20,7 @@ def get_question_answer(text, isFormatted):
     return ts.getQuestionAnswerFromText(text)
 
 def get_summary(text, isHeading):
-    
     if isHeading:
         url = 'https://en.wikipedia.org/wiki/'+text
-        return GenericProcessingTools.getTextFromHeadingBySearch(url)
-    summary = ts.getSummaryFromText(text)
-    return summary
+        text =  GenericProcessingTools.getTextFromHeadingBySearch(url)
+    return ts.getSummaryFromText(text)
