@@ -4,6 +4,7 @@ import numpy as np
 from TextUtilities import TextProcessor
 from nltk.corpus import stopwords
 from TextUtilities import TextSummarizerUtils
+import math
 import os
 
 trainedDataSet = r'../trainedData/glove.6B.100d.txt'
@@ -25,10 +26,34 @@ class TextSummarizer:
         summary=""
         size = len(ranked_sentences)
         if(size>5):
-            size = 5
+            size = int(math.sqrt(size))
         for i in range(size):
             summary = summary + ranked_sentences[i][1]
         return summary
+    
+    def getQuestionAnswerFromText(self, text):
+        processedText = TextProcessor.getProcessedTextualData(text)
+        sposs = {}
+        for sentence in processedText.sentences :
+            poss = {}
+            sposs[sentence.string] = poss
+            for tags in sentence.tags:
+                tag = tags[1].encode('utf-8')
+                if tag not in poss:
+                    poss[tag] = []
+                poss[tag].append(tags[0].encode('utf-8'))
+
+        questionAnswerList = []
+        for sentence in sposs.keys():
+            poss = sposs[sentence]
+            (word, newSentence, replaced) = TextProcessor.removeWordFromSentence(sentence, poss)
+            val = {}
+            if replaced is not None:
+                val['question'] = replaced
+                val['answer'] = word
+            questionAnswerList.append(val)
+        return questionAnswerList
+
 
 
     

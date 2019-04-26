@@ -23,11 +23,17 @@ def routes(app):
                 print("hello2")
                 return manager.convert_pdf_html(name, pdf_file)
 
-    @app.route('/getQuestion/')
-    def getquestion():
-        return manager.get_question()
+    @app.route('/question')
+    def get_question_answer():
+        data = request.get_json()
+        isFormatted = data['isFormatted']
+        text = data['text']
+        try : 
+            return jsonify({"code":"200","message":"successful","data":manager.get_question_answer(text, isFormatted)})
+        except Exception as e:
+            return jsonify({"code":"500","message":"error","data":str(e)})
 
-    @app.route('/getText/ocr/', methods=['POST'])
+    @app.route('/text/ocr', methods=['POST'])
     def getOcr():
         if(request.files['file'] == ''):
             return jsonify({"code":"400","message":"error","data":"error"})
@@ -41,8 +47,8 @@ def routes(app):
                     return jsonify({"code":"200","message":"successful","data":data})
                 else:
                     return jsonify({"code":"400","message":"error","data":"error"})
-            except:
-                return jsonify({"code":"500","message":"error","data":"error"})
+            except Exception as e:
+                return jsonify({"code":"500","message":"error","data":str(e)})
 
     @app.route('/summarize', methods = ['POST'])
     def getSummary():
@@ -51,8 +57,8 @@ def routes(app):
         isHeading = data['isHeading']
         try:
             return jsonify({"code":"200","message":"successful","data":manager.get_summary(text, isHeading)})
-        except:
-            return jsonify({"code":"500","message":"error","data":"error"})
+        except Exception as e:
+            return jsonify({"code":"500","message":"error","data":str(e)})
 
     
 

@@ -2,8 +2,16 @@ from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
 import pandas as pd
 import numpy as np
+from textblob import TextBlob
+import random
 import re
 
+def getProcessedTextualData(text):
+    return TextBlob(text)
+
+def replaceIC(word, sentence):
+    insensitive_hippo = re.compile(re.escape(word), re.IGNORECASE)
+    return insensitive_hippo.sub('__________________', sentence)
 
 def getSentences(line):
     regex = re.compile("\((.*?)\)")
@@ -37,6 +45,42 @@ def removeStopwords(sentenceList):
         sentenceNew = " ".join([i for i in sentence.split() if i not in stop_words])
         newSentences.append(sentenceNew)
     return newSentences
+
+def removeWordFromSentence(sentence, poss):
+    words = None
+    words = poss.get(b'NN')
+    words = None
+    temp1 = None
+    temp1 = poss.get(b'NNP')
+    temp2 = poss.get(b'NN')
+    poss2 = {}
+    count=0
+    for key, value in poss.items(): 
+        x = key.decode("utf-8")
+        temp = []
+        for iter in value:
+            y = iter.decode("utf-8")
+            temp.append(y)
+        poss2[x] = temp
+        count+=1
+    if 'NNP' in poss2:
+        words = poss2['NNP']
+    elif 'NN' in poss2:
+        words = poss2['NN']
+    else:
+        print("NN and NNP not found")
+        return (None, sentence, None)
+    if len(words) > 0:
+        word = random.choice(words)
+        replaced = replaceIC(word, sentence)
+        return (word, sentence, replaced)
+    else:
+        print("words are empty")
+        return (None, sentence, None)
+
+
+
+
 
     
 
