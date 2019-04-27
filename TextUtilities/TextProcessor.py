@@ -5,12 +5,24 @@ import numpy as np
 from textblob import TextBlob
 import random
 import re
+import json
+
+"""
+str = r'Hello might be derived from hullo, which the American Merriam-Webster dictionary describes as a "chiefly British variant of hello," and which was originally used as an exclamation to call attention, an expression of surprise, or a greeting.The word hullo is still in use, with the meaning hello.The use of hello as a telephone greeting has been credited to Thomas Edison; according to one source, he expressed his surprise with a misheard Hullo.Bill Bryson asserts in his book Mother Tongue that "hello" comes from Old English hál béo þu (see also "goodbye" which is a contraction of "God be with you".According to the Oxford English Dictionary, hello is an alteration of hallo, hollo, which came from Old High German "halâ, holâ, emphatic imperative of halôn, holôn to fetch, used especially in hailing a ferryman."'
+str = json.dumps(str)
+regex = re.compile("\((.*?)\)")
+str = re.sub( regex, ' ', str)
+regex = re.compile("\[(.*?)\]")
+str = re.sub( regex, ' ', str)
+str = re.sub(r'\s+', ' ', str)
+print(sent_tokenize(str))
+"""
 
 def getProcessedTextualData(text):
     return TextBlob(text)
 
 def replaceIC(word, sentence):
-    insensitive_hippo = re.compile(re.escape(word), re.IGNORECASE)
+    insensitive_hippo = re.compile(r"\b"+word+r"\b", re.IGNORECASE)
     return insensitive_hippo.sub('__________________', sentence)
 
 def getSentences(line):
@@ -18,8 +30,14 @@ def getSentences(line):
     line = re.sub( regex, ' ', line)
     regex = re.compile("\[(.*?)\]")
     line = re.sub( regex, ' ', line)
-    line = re.sub(r'\s+', ' ', line) 
+    #regex = line.strip('\"\'')
+    regex = re.compile("\"")
+    line = re.sub(regex, ' ', line)
+    line = re.sub(r'\s+', ' ', line)
+    
     return sent_tokenize(line)
+
+    
 
 def getWordEmbedding(fileName):
     word_embeddings = {}

@@ -4,22 +4,27 @@ import numpy as np
 from TextUtilities import TextProcessor
 from nltk.corpus import stopwords
 from TextUtilities import TextSummarizerUtils
+from nltk.tokenize import sent_tokenize
 import math
 import os
 
 trainedDataSet = r'../trainedData/glove.6B.100d.txt'
-
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, trainedDataSet)
 
 class TextSummarizer:
-    def getSummaryFromText(self, text):
-        sentences = TextProcessor.getSentences(text)
+    def __init__(self):
+        self.word_embeddings = TextProcessor.getWordEmbedding(filename)
+
+    def getSummaryFromText(self, line):
+        sentences = TextProcessor.getSentences(line)
+        print(sentences)
         dirname = os.path.dirname(__file__)
         filename = os.path.join(dirname, trainedDataSet)
-        word_embeddings = TextProcessor.getWordEmbedding(filename)
         cleanSentences = TextProcessor.removePunctuation(sentences)
         cleanSentences = TextProcessor.removeStopwords(cleanSentences)
         
-        sentence_vectors = TextSummarizerUtils.createSentenceVector(cleanSentences, word_embeddings)
+        sentence_vectors = TextSummarizerUtils.createSentenceVector(cleanSentences, self.word_embeddings)
         sim_mat = TextSummarizerUtils.createSimilarityMatrix(cleanSentences, sentence_vectors)
         scores = TextSummarizerUtils.getScoreFromSimilarityMatrix(sim_mat)
         ranked_sentences = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)
@@ -28,7 +33,7 @@ class TextSummarizer:
         if(size>5):
             size = int(math.sqrt(size))
         for i in range(size):
-            summary = summary + ranked_sentences[i][1]
+            summary = summary + ranked_sentences[i][1] + " "
         return summary
     
     def getQuestionAnswerFromText(self, text):

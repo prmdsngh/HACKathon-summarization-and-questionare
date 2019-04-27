@@ -1,6 +1,7 @@
 from flask import jsonify
 from Utilities import GenericProcessingTools
 from TextUtilities import TextSummarizer,TextProcessor
+import ImageToVid
 import json
 
 ts = TextSummarizer.TextSummarizer()
@@ -24,3 +25,11 @@ def get_summary(text, isHeading):
         url = 'https://en.wikipedia.org/wiki/'+text
         text =  GenericProcessingTools.getTextFromHeadingBySearch(url)
     return ts.getSummaryFromText(text)
+
+def get_summary_video(text):
+    text = json.dumps(text, separators=(',', ':'))
+    print(text)
+    images = ImageToVid.getImagesFromSentences(text,5)
+    if len(images)==0:
+        return "no images"
+    return ImageToVid.generateVideoFromText(images)

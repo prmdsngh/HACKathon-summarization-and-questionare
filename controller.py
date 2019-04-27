@@ -6,9 +6,6 @@ import sys
 from FileUtilities import FileUtils
 
 def routes(app):
-    @app.route("/*")
-    def hello():
-        return "server is running but URI need to be checked"
 
     @app.route('/convertpdf/html', methods=['GET','POST'])
     def convertpdf():
@@ -57,6 +54,15 @@ def routes(app):
         isHeading = data['isHeading']
         try:
             return jsonify({"code":"200","message":"successful","data":manager.get_summary(text, isHeading)})
+        except Exception as e:
+            return jsonify({"code":"500","message":"error","data":str(e)})
+
+    @app.route('/summarize/video', methods = ['POST'])
+    def getSummaryVideo():
+        data = request.get_json()
+        text = data['text']
+        try:
+            return jsonify({"code":"200","message":"successful","data":manager.get_summary_video(text)})
         except Exception as e:
             return jsonify({"code":"500","message":"error","data":str(e)})
 

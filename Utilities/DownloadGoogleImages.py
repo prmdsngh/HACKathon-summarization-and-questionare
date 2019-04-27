@@ -11,27 +11,31 @@ def downloadimages(query , limit):
     # be specified manually ("large, medium, icon") 
     # aspect ratio denotes the height width ratio 
     # of images to download. ("tall, square, wide, panoramic") 
-    arguments = {"keywords": query, 
+    arguments = {
+                 "keywords": query, 
                  "format": "jpg", 
                  "limit":limit, 
                  "print_urls":True, 
                  "size": "medium", 
-                 "aspect_ratio: panoramic"} 
+                 "aspect_ratio": "panoramic"
+                 } 
     try: 
-        response.download(arguments) 
+        return response.download(arguments) 
       
     # Handling File NotFound Error     
     except FileNotFoundError:  
-        arguments = {"keywords": query, 
+        arguments = {
+                     "keywords": query, 
                      "format": "jpg", 
                      "limit":limit, 
-                     "print_urls":True,  
-                     "size": "medium"} 
+                     "print_urls":True,
+                     "size": "medium"
+                     } 
                        
         # Providing arguments for the searched query 
         try: 
             # Downloading the photos based 
             # on the given arguments 
-            response.download(arguments)  
+            return response.download(arguments)  
         except: 
             pass

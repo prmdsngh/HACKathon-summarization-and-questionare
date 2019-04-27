@@ -5,7 +5,7 @@ import sys
 def create_app():
     app = Flask(__name__, static_url_path='/static')
     app.secret_key = 'super_secret_key'
-    app.debug = False
+    app.debug = True
     return app
 
 def run_app(app):
