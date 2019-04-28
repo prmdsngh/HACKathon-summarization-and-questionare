@@ -1,5 +1,5 @@
 import manager
-from flask import request,jsonify
+from flask import request,jsonify,render_template
 from werkzeug import secure_filename
 from forms import pdfFileForm
 import sys
@@ -7,6 +7,10 @@ from FileUtilities import FileUtils
 
 def routes(app):
 
+    @app.route("/")
+    def hello():
+        return render_template("index.html")
+    
     @app.route('/convertpdf/html', methods=['GET','POST'])
     def convertpdf():
         if(request.method == 'POST'):
@@ -20,7 +24,7 @@ def routes(app):
                 print("hello2")
                 return manager.convert_pdf_html(name, pdf_file)
 
-    @app.route('/question')
+    @app.route('/question', methods=['POST'])
     def get_question_answer():
         data = request.get_json()
         isFormatted = data['isFormatted']

@@ -21,10 +21,12 @@ def get_question_answer(text, isFormatted):
     return ts.getQuestionAnswerFromText(text)
 
 def get_summary(text, isHeading):
+    data = ""
     if isHeading:
         url = 'https://en.wikipedia.org/wiki/'+text
-        text =  GenericProcessingTools.getTextFromHeadingBySearch(url)
-    return ts.getSummaryFromText(text)
+        data =  GenericProcessingTools.getTextFromHeadingBySearch(url)
+        ImageToVid.generateVideoFromText(text,8)
+    return ts.getSummaryFromText(data)
 
 def get_summary_video(text):
     text = json.dumps(text, separators=(',', ':'))

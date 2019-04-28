@@ -1,0 +1,18 @@
+#keyword {
+    background-color: #FDC632;
+    color: #002347;
+}
+
+#upload {
+    background-color: #002347;
+    color: #FDC632;    
+}
+
+.summary {
+    height: 300px;
+    width: 100%;
+    background-color: #002347;
+    color: #FDC632;    
+    padding: 10px;
+    overflow: auto;
+}

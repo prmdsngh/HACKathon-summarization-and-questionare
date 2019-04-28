@@ -4,7 +4,9 @@ from Utilities import DownloadGoogleImages
 from PIL import Image
 from TextUtilities import TextProcessor
 
-def generateVideoFromText(images):
+def generateVideoFromText(text,size):
+    path = DownloadGoogleImages.downloadimages(text, size)
+    images = path[text]
     video_name = 'video.avi'
     ext = '.jpg'
     fps = 1

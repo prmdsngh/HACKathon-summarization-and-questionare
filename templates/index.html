@@ -1,0 +1,95 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+
+<div class="header">
+    <div class="container">
+        <h1>READING HELPER</h1>
+    </div>
+</div>
+<hr>
+<div ng-controller="MainController" class="charts-area">
+    <div ng-if="showLoader" style="position:absolute;top:50%;right: 50%;">
+        <div class="spinner-grow text-muted"></div>
+        <div class="spinner-grow text-primary"></div>
+        <div class="spinner-grow text-success"></div>
+        <div class="spinner-grow text-info"></div>
+        <div class="spinner-grow text-warning"></div>
+        <div class="spinner-grow text-danger"></div>
+        <div class="spinner-grow text-secondary"></div>
+        <div class="spinner-grow text-dark"></div>
+        <div class="spinner-grow text-light"></div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-primary" id="keyword" ng-click="keywordFunc()"
+                    ng-if="keywordToggle">Keyword</button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary" id="upload" ng-click="uploadFunc()" ng-if="uploadToggle">Upload
+                    Pdf/Photo</button>
+            </div>
+        </div>
+        <hr>
+        <div class="container" ng-if="formToggle">
+            <div class="form-group">
+                <input class="form-control" ng-model="formData.summaryInput">
+                {[{summaryInput}]}
+                <button class="btn btn-outline-dark summarize" style="margin:10px;align-self: auto;"
+                    ng-click="getSummary()">Summarize!</button>
+            </div>
+            <hr>
+            <div class="container">
+                <div class="card summary" ng-if="textAreaToggle">
+                    {[{summary}]}
+                </div>
+            </div>
+            <hr>
+            <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#myModal"
+                ng-if="textAreaToggle" ng-click="getQuiz()">
+                Quizzzz!!
+            </button>
+            <!-- The Modal -->
+            <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h1 class="modal-title">Questionare</h1>
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div cng-repeat="x in questions">{[{x.question}]}</div>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+
+                <div ng-if="fileToggle">
+                   
+                        <input type="file" file-model="myFile">
+                        <button ng-click="getSummaryFromFile()" class="btn btn-primary">Upload</button>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
